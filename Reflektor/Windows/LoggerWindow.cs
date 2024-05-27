@@ -71,13 +71,9 @@ public class LoggerWindow
 
         Logs.Text(logText.ToString());
     }
-
-    private static readonly ManualLogSource ManualLogSource = Logger.CreateLogSource("Logger window #1232");
     
     public static void SetDisplay(bool visible)
     {
-        ManualLogSource.LogInfo("Wow this is now toggled!");
-        
         if (visible)
         {
             Window.rootVisualElement.Show();

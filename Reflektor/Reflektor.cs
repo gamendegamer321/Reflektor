@@ -71,6 +71,7 @@ public class Reflektor : BaseSpaceWarpPlugin
 
         _harmonyInstance = new Harmony(ModGuid);
         _harmonyInstance.PatchAll(typeof(BepInExLogPatch));
+        _harmonyInstance.PatchAll(typeof(MessagesPatch));
 
         Log("Initialized");
 

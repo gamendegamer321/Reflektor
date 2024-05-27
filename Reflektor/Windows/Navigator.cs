@@ -46,6 +46,7 @@ public class Navigator
                 break;
             case WindowId.Messages:
                 target = MessagesToggle;
+                Messages.SetDisplay(targetValue);
                 break;
             default:
                 // TODO: log error
