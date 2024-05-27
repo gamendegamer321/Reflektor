@@ -89,3 +89,6 @@ crashlytics-build.properties
 # ThunderKit settings
 /[Aa]ssets/ThunderKitSettings
 /[Aa]ssets/ThunderKitSettings.meta
+
+*.uss.map
+*.uss.map.meta

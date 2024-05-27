@@ -1,0 +1,438 @@
+#BrowserWindowRoot {
+  min-height: 650px;
+  max-height: 650px;
+  min-width: 700px;
+  max-width: 700px;
+}
+
+#InspectorWindowRoot {
+  min-height: 750px;
+  max-height: 750px;
+  min-width: 1000px;
+  max-width: 1000px;
+}
+
+#NavbarWindowRoot {
+  min-width: 360px;
+  max-width: 360px;
+}
+
+.header {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+TextField > Label {
+  min-width: 75px;
+}
+TextField #unity-text-input {
+  border-radius: 6px;
+}
+TextField.readonly {
+  color: gray;
+}
+
+ListView {
+  border-radius: 6px;
+  background-color: #192128;
+}
+ListView .unity-list-view__item {
+  border-radius: 6px;
+  padding-left: 6px;
+}
+ListView .unity-list-view__item:hover {
+  background-color: #3F4487;
+}
+ListView .unity-list-view__item:checked {
+  background-color: #4B50B0;
+}
+
+#ComponentList .unity-list-view__item {
+  color: #0DA674;
+}
+#ComponentList .unity-list-view__item:hover {
+  color: white;
+  background-color: #0DA674;
+}
+#ComponentList .unity-list-view__item:checked {
+  color: white;
+  background-color: #156F50;
+}
+
+DropdownField {
+  margin: 4px 0px;
+  padding: 4px 0px;
+}
+
+GroupBox {
+  margin: 4px 0px;
+  padding: 4px 0px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+Toggle {
+  padding: 4px 0px;
+}
+
+ListView {
+  flex-grow: 1;
+}
+
+#PathInput {
+  font-size: 12px;
+}
+#PathInput .unity-text-element {
+  padding-left: 2px;
+  min-width: 100%;
+  max-width: 100%;
+  white-space: normal;
+}
+
+#Splitter {
+  flex-grow: 1;
+  flex-direction: row;
+  max-width: 650px;
+}
+
+#RaycastPane {
+  display: none;
+  min-width: 332px;
+  max-width: 332px;
+}
+
+#RaycastLabel {
+  color: #00ff77;
+}
+
+#ObjectPane {
+  min-width: 332px;
+  max-width: 332px;
+}
+
+#DetailsPane {
+  padding-left: 8px;
+  min-width: 350px;
+  max-width: 350px;
+}
+
+#UpBtn, #RefreshBtn {
+  padding: 8px;
+  margin-left: 4px;
+  font-size: 22px;
+  flex-grow: 1;
+}
+
+#SceneChangeDropdown {
+  flex-grow: 10;
+  width: 65%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.unity-base-popup-field__arrow,
+.unity-enum-field__arrow {
+  margin-right: 4px;
+  -unity-background-image-tint-color: rgba(255, 255, 255, 0.6);
+}
+
+.unity-popup-field .unity-text-element,
+.unity-enum-field .unity-text-element {
+  -unity-text-align: middle-left;
+}
+.unity-popup-field .unity-popup-field__input,
+.unity-popup-field .unity-enum-field__input,
+.unity-enum-field .unity-popup-field__input,
+.unity-enum-field .unity-enum-field__input {
+  height: 30px;
+  color: #c0c7d5;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-color: #333333;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 3px 10px 3px 10px;
+}
+.unity-popup-field:inactive > .unity-enum-field__input, .unity-popup-field:inactive > .unity-popup-field__input,
+.unity-enum-field:inactive > .unity-enum-field__input,
+.unity-enum-field:inactive > .unity-popup-field__input {
+  color: #c0c7d5;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.unity-popup-field:hover > .unity-enum-field__input, .unity-popup-field:hover > .unity-popup-field__input,
+.unity-enum-field:hover > .unity-enum-field__input,
+.unity-enum-field:hover > .unity-popup-field__input {
+  color: #c0c7d5;
+  background-color: #1C1C26;
+  border-color: #555555;
+}
+.unity-popup-field:active > .unity-enum-field__input, .unity-popup-field:active > .unity-popup-field__input,
+.unity-enum-field:active > .unity-enum-field__input,
+.unity-enum-field:active > .unity-popup-field__input {
+  background-color: #1C1C26;
+  border-color: #777777;
+}
+
+.controls {
+  align-items: center;
+  margin: 0px;
+}
+.controls GroupBox {
+  min-height: 0px;
+  margin: 0px;
+  padding: 0px;
+  align-items: center;
+}
+.controls Toggle VisualElement {
+  display: none;
+}
+.controls Toggle > Label {
+  -unity-text-align: middle-center;
+  min-width: auto;
+  padding-left: 2px;
+  border-radius: 4px;
+  color: white;
+  background-color: rgba(1, 1, 1, 0.25);
+}
+.controls .greenToggle > Label {
+  color: #3D675B;
+}
+.controls .greenToggle:hover > Label {
+  color: #529D89;
+  background-color: rgba(1, 1, 1, 0.5);
+}
+.controls .greenToggle:checked > Label {
+  color: white;
+  background-color: #2D574B;
+}
+.controls .greenToggle:checked:hover > Label {
+  color: white;
+  background-color: #529D89;
+}
+.controls .purpleToggle > Label {
+  color: #673689;
+}
+.controls .purpleToggle:hover > Label {
+  color: #9951C9;
+  background-color: rgba(1, 1, 1, 0.5);
+}
+.controls .purpleToggle:checked > Label {
+  color: white;
+  background-color: #673689;
+}
+.controls .purpleToggle:checked:hover > Label {
+  color: white;
+  background-color: #A961D9;
+}
+.controls .orangeToggle > Label {
+  color: #894404;
+}
+.controls .orangeToggle:hover > Label {
+  color: #CE670E;
+  background-color: rgba(1, 1, 1, 0.5);
+}
+.controls .orangeToggle:checked > Label {
+  color: white;
+  background-color: #894404;
+}
+.controls .orangeToggle:checked:hover > Label {
+  color: white;
+  background-color: #DE771E;
+}
+.controls #AutoRefreshToggle > Label {
+  color: #005588;
+}
+.controls #AutoRefreshToggle:hover > Label {
+  color: #006699;
+  background-color: rgba(1, 1, 1, 0.5);
+}
+.controls #AutoRefreshToggle:checked > Label {
+  color: white;
+  background-color: #004477;
+}
+.controls #AutoRefreshToggle:checked:hover > Label {
+  color: white;
+  background-color: #006699;
+}
+.controls #RefreshButton {
+  padding: 2px 6px;
+  border-width: 1px;
+  height: 28px;
+}
+.controls #FilterInput {
+  width: 500px;
+  font-size: 12px;
+}
+
+.spacer {
+  min-width: 20px;
+}
+
+#TabBar {
+  font-size: 11px;
+  margin: 0px;
+  padding: 0px;
+  height: 42px;
+}
+#TabBar > VisualElement {
+  background-color: rgba(0, 0, 0, 0.25);
+  flex-direction: row;
+  align-items: center;
+  padding: 4px;
+  margin-right: 4px;
+  border-radius: 3px;
+}
+#TabBar > VisualElement.focused {
+  background-color: #115588;
+}
+#TabBar > VisualElement.focused > Label {
+  color: white;
+}
+#TabBar > VisualElement:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+#TabBar > VisualElement.focused:hover {
+  background-color: #226699;
+}
+#TabBar > VisualElement > Label {
+  -unity-text-align: middle-left;
+  max-width: 200px;
+}
+#TabBar > VisualElement > Button {
+  width: 22px;
+  height: 22px;
+  font-size: 20px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 0, 0, 0);
+  border-radius: 3px;
+}
+#TabBar > VisualElement > Button:hover {
+  background-color: #991100;
+}
+#TabBar > VisualElement > Button:active {
+  background-color: #ff0000;
+}
+#TabBar #unity-content-and-vertical-scroll-container {
+  max-width: 100%;
+  padding: 0px;
+  margin: 0px;
+  background-color: transparent;
+}
+
+#InspectorContent {
+  flex-grow: 1;
+  flex-shrink: 1;
+  font-size: 11px;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+}
+#InspectorContent Label {
+  height: 28px;
+  -unity-text-align: middle-left;
+}
+#InspectorContent .input-control {
+  flex-direction: row;
+}
+#InspectorContent .input-control Button {
+  height: 24px;
+  margin: 2px;
+  font-size: 11px;
+}
+#InspectorContent .input-control > Button {
+  min-width: 120px;
+  margin-right: 12px;
+  flex-shrink: 1;
+}
+#InspectorContent .input-control > VisualElement {
+  flex-shrink: 1;
+  width: 50%;
+}
+#InspectorContent .input-control > VisualElement > VisualElement > Toggle {
+  width: 100%;
+}
+#InspectorContent .input-control .image-save-controls {
+  flex-direction: row;
+}
+#InspectorContent .input-control .image-save-controls > TextField {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#InspectorContent .input-control .image-preview {
+  margin: 10px 0px;
+  width: 100%;
+  height: 200px;
+  -unity-background-scale-mode: scale-to-fit;
+}
+#InspectorContent .input-control Toggle {
+  padding: 0px;
+}
+#InspectorContent .input-control Toggle > .unity-toggle__input {
+  margin-top: 2px;
+  height: 22px;
+}
+#InspectorContent .input-control Toggle > .unity-toggle__input > .unity-toggle__checkmark {
+  height: 18px;
+}
+#InspectorContent .input-control DropdownField,
+#InspectorContent .input-control EnumField {
+  flex-shrink: 1;
+  width: 50%;
+  max-width: 50%;
+  padding: 0px;
+  margin: 2px;
+}
+#InspectorContent .input-control DropdownField .unity-popup-field__input,
+#InspectorContent .input-control DropdownField .unity-enum-field__input,
+#InspectorContent .input-control EnumField .unity-popup-field__input,
+#InspectorContent .input-control EnumField .unity-enum-field__input {
+  height: 24px;
+  font-size: 11px;
+  padding: 3px 10px 3px 10px;
+}
+#InspectorContent .input-control TextField {
+  padding: 0px;
+  margin: 0px;
+  min-width: 50%;
+  flex-shrink: 1;
+  height: 28px;
+  flex-shrink: 1;
+}
+#InspectorContent .input-control TextField > #unity-text-input {
+  padding: 0px;
+  margin: 2px;
+}
+#InspectorContent .input-control TextField > #unity-text-input > .unity-text-element {
+  height: 24px;
+  padding-bottom: 3px;
+  padding-left: 6px;
+}
+#InspectorContent .input-control .color-preview {
+  max-width: 20px;
+  height: 20px;
+  background-color: red;
+  border-color: #444444;
+  border-width: 1px;
+  border-radius: 6px;
+  margin-top: 4px;
+  margin-left: -24px;
+}
+#InspectorContent .input-control .container-expanded {
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#InspectorContent .input-control .container-expanded > .input-control > TextField {
+  width: 100%;
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+#InspectorContent .input-control .method-output {
+  flex-shrink: 1;
+  flex-grow: 1;
+  white-space: normal;
+}
+
+/*# sourceMappingURL=Styles.uss.map */

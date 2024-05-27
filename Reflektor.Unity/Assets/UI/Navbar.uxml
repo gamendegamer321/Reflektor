@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles.uss?fileID=7433441132597879392&amp;guid=1f418f752277be643b9f97b55b379d1a&amp;type=3#Styles" />
+    <ui:GroupBox name="NavbarWindowRoot" class="root controls">
+        <ui:Toggle label="Inspector" name="InspectorToggle" value="true" class="greenToggle" />
+        <ui:Toggle label="Browser" name="BrowserToggle" value="true" class="purpleToggle" />
+        <ui:Toggle label="Logger" name="LoggerToggle" value="true" class="orangeToggle" />
+        <ui:Toggle label="Messages" name="MessagesToggle" value="true" class="orangeToggle" />
+    </ui:GroupBox>
+</ui:UXML>

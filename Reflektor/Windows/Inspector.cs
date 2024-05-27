@@ -11,6 +11,7 @@ public static class Inspector
     private static readonly Dictionary<SelectKey, Tab> Tabs = new();
     private static DisplayFlags _flags = DisplayFlags.All;
     private static SelectKey? _current;
+
     private static SelectKey? Current
     {
         get => _current;
@@ -20,30 +21,30 @@ public static class Inspector
             GetPathString();
         }
     }
-    
+
     // GUI Elements
     private static readonly UIDocument Window;
-    
+
     private static readonly VisualElement TabBar;
     private static readonly TextField PathInput;
     private static readonly TextField FilterInput;
     private static readonly Toggle AutoRefreshToggle;
     private static readonly Button RefreshButton;
     private static readonly ScrollView InspectorContent;
-    
+
     static Inspector()
     {
         Window = Utils.GetNewWindow("InspectorWindow");
-        
+
         // Find GUI elements
         TabBar = Window.rootVisualElement.Q<VisualElement>(name: "TabBar");
         PathInput = Window.rootVisualElement.Q<TextField>(name: "PathInput");
         FilterInput = Window.rootVisualElement.Q<TextField>(name: "FilterInput");
-        
+
         Toggle propertyToggle = Window.rootVisualElement.Q<Toggle>(name: "PropertyToggle");
         Toggle fieldToggle = Window.rootVisualElement.Q<Toggle>(name: "FieldToggle");
         Toggle methodToggle = Window.rootVisualElement.Q<Toggle>(name: "MethodToggle");
-        
+
         AutoRefreshToggle = Window.rootVisualElement.Q<Toggle>(name: "AutoRefreshToggle");
         RefreshButton = Window.rootVisualElement.Q<Button>(name: "RefreshButton");
         InspectorContent = Window.rootVisualElement.Q<ScrollView>(name: "InspectorContent");
@@ -79,7 +80,7 @@ public static class Inspector
                 }
             }
         });
-            
+
         RefreshButton.clicked += () =>
         {
             if (Current != null)
@@ -87,11 +88,11 @@ public static class Inspector
                 Reflektor.FirePropertyChangedEvent(Current, true);
             }
         };
-        
+
         // Remove placeholder elements
         TabBar.Clear();
         InspectorContent.Clear();
-        
+
         Window.Hide();
     }
 
@@ -111,6 +112,8 @@ public static class Inspector
         Tab t = new(key);
         t.AddTab(TabBar, InspectorContent);
         Tabs.Add(key, t);
+        
+        Navigator.UpdateValue(Navigator.WindowId.Inspector, true);
     }
 
     public static void SwitchTab(SelectKey key)
@@ -119,11 +122,11 @@ public static class Inspector
         {
             prevTab.UnfocusTab();
         }
-        
+
         Current = key;
-        
+
         Window.Show();
-        
+
         AddTab(key);
         Refresh();
 
@@ -131,7 +134,7 @@ public static class Inspector
         {
             currentTab.FocusTab();
         }
-        
+
         InspectorContent.scrollOffset = Vector2.zero;
     }
 
@@ -141,15 +144,15 @@ public static class Inspector
         {
             return;
         }
-        
+
         if (Equals(key, Current))
         {
             Current = null;
         }
-        
+
         closeTab.RemoveTab(TabBar, InspectorContent);
         Tabs.Remove(key);
-        
+
         // Switch tab
         if (Tabs.Count > 0)
         {
@@ -160,7 +163,7 @@ public static class Inspector
         }
         else
         {
-            Window.Hide();
+            Navigator.UpdateValue(Navigator.WindowId.Inspector, false);
         }
     }
 
@@ -192,25 +195,24 @@ public static class Inspector
         }
     }
 
-    public static void ToggleDisplay()
+    public static void SetDisplay(bool visible)
     {
-        if (Window.rootVisualElement.style.display == DisplayStyle.Flex)
+        if (visible)
         {
-            Window.Hide();
+            Window.Show();
         }
         else
         {
-            if (Tabs.Count > 0)
-            {
-                Window.Show();
-            }
+            Window.Hide();
         }
     }
 
-    private static IEnumerator RefreshAutoCycle() {
-        while(AutoRefreshToggle.value) {
+    private static IEnumerator RefreshAutoCycle()
+    {
+        while (AutoRefreshToggle.value)
+        {
             yield return new WaitForSeconds(1f);
-            
+
             if (Current != null)
             {
                 Reflektor.FirePropertyChangedEvent(Current);

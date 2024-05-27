@@ -9,16 +9,26 @@ public static class Browser
 {
     // Events
     public static event Action<GameObject?>? CurrentChangedEvent;
-    
+
     // Data
     public static GameObject? Current { get; private set; }
     private static readonly List<GameObject> RaycastObjects = new();
     private static readonly BrowserValues BrowserValues;
     private static bool _isParentEditMode;
-    
+
+    private static string[] _disallowDisableList =
+    {
+        "GameManager",
+        "KerbalPanelSettings",
+        "_InspectorRoot",
+        "Browser",
+        "Inspector",
+        "Navbar"
+    };
+
     // GUI Elements
     private static readonly UIDocument Window;
-    
+
     private static readonly TextField Path;
     private static readonly Toggle ParentEditToggle;
     private static readonly VisualElement? ObjectPane;
@@ -29,7 +39,7 @@ public static class Browser
     static Browser()
     {
         Window = Utils.GetNewWindow("BrowserWindow");
-        
+
         // Find GUI elements
         Path = Window.rootVisualElement.Q<TextField>(name: "PathInput");
         ParentEditToggle = Window.rootVisualElement.Q<Toggle>(name: "EditParentToggle");
@@ -37,13 +47,10 @@ public static class Browser
         RaycastList = Window.rootVisualElement.Q<ListView>(name: "RaycastList");
         ObjectPane = Window.rootVisualElement.Q<VisualElement>(name: "ObjectPane");
         RaycastPane = Window.rootVisualElement.Q<VisualElement>(name: "RaycastPane");
-        
+
         // Add callbacks
-        Path.RegisterValueChangedCallback(evt =>
-        {
-            FindGameObject(evt.newValue);
-        });
-        
+        Path.RegisterValueChangedCallback(evt => { FindGameObject(evt.newValue); });
+
         ParentEditToggle.SetEnabled(false);
         ParentEditToggle.RegisterValueChangedCallback(evt =>
         {
@@ -53,7 +60,7 @@ public static class Browser
                 ParentEditToggle.SetValueWithoutNotify(false);
                 return;
             }
-            
+
             _isParentEditMode = evt.newValue;
             if (_isParentEditMode)
             {
@@ -66,13 +73,13 @@ public static class Browser
                 Refresh();
             }
         });
-        
+
         var browserObjects = new BrowserObjects(Window.rootVisualElement);
         browserObjects.Setup();
-        
+
         BrowserValues = new BrowserValues(Window.rootVisualElement);
         BrowserValues.Setup();
-        
+
         // Setup raycast
         RaycastBackBtn.clicked += Refresh;
         RaycastList.itemsSource = RaycastObjects;
@@ -85,10 +92,7 @@ public static class Browser
             }
 
             label.text = RaycastObjects[i].name.ToString();
-            label.RegisterCallback<MouseDownEvent>(_ =>
-            {
-                Refresh(RaycastObjects[i]);
-            });
+            label.RegisterCallback<MouseDownEvent>(_ => { Refresh(RaycastObjects[i]); });
         };
 
         // Testing
@@ -114,6 +118,7 @@ public static class Browser
                     _isParentEditMode = false;
                     ParentEditToggle.SetValueWithoutNotify(false);
                 }
+
                 Refresh();
             }
             else
@@ -133,48 +138,55 @@ public static class Browser
             }
         }
     }
-    
+
     public static void Refresh(GameObject? newGameObject)
     {
         Current = newGameObject;
         Refresh();
     }
-    
+
     public static void Refresh()
     {
         HideRaycastResults();
-        
+
         Path.SetValueWithoutNotify(Current != null ? Current.GetPath() : "/");
 
         _isParentEditMode = false;
         ParentEditToggle.SetValueWithoutNotify(false);
         ParentEditToggle.SetEnabled(Current is not null);
-            
+
         CurrentChangedEvent?.Invoke(Current);
     }
 
     public static void Up()
     {
         Refresh(Current != null && Current.transform.parent != null
-                ? Current.transform.parent.gameObject
-                : null);
+            ? Current.transform.parent.gameObject
+            : null);
     }
 
-    public static void ToggleDisplay()
+    public static void SetDisplay(bool visible)
     {
-        Window.rootVisualElement.ToggleDisplay();
+        if (visible)
+        {
+            Window.rootVisualElement.Show();
+        }
+        else
+        {
+            Window.rootVisualElement.Hide();
+        }
     }
 
     public static void ShowRaycastResults(IEnumerable<GameObject> objects)
     {
         Window.rootVisualElement.Show();
-        
+
         Path.SetEnabled(false);
         RaycastPane.Show();
         ObjectPane.Hide();
         BrowserValues.Disable();
         ParentEditToggle.SetEnabled(false);
-        
+
         RaycastObjects.Clear();
         RaycastObjects.AddRange(objects);
 
@@ -195,17 +207,9 @@ public static class Browser
         RaycastPane.Hide();
         ObjectPane.Show();
     }
-    
+
     public static bool CanDisable(string name)
     {
-        List<string> disallowDisableList = new()
-        {
-            "GameManager",
-            "KerbalPanelSettings",
-            "_Inspector",
-            "_Inspector_Browser"
-        };
-        
-        return !disallowDisableList.Contains(name);
+        return !_disallowDisableList.Contains(name);
     }
 }

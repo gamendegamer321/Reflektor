@@ -18,7 +18,7 @@ public class Reflektor : BaseSpaceWarpPlugin
     [PublicAPI] public const string ModGuid = MyPluginInfo.PLUGIN_GUID;
     [PublicAPI] public const string ModName = MyPluginInfo.PLUGIN_NAME;
     [PublicAPI] public const string ModVer = MyPluginInfo.PLUGIN_VERSION;
-    
+
     // Instance stuff
     public static Reflektor? Instance;
 
@@ -29,13 +29,11 @@ public class Reflektor : BaseSpaceWarpPlugin
     public static event Action<SelectKey, bool>? PropertyChangedEvent;
 
     // Config
-    private ConfigEntry<KeyCode>? _showHideToggleShortcutBrowser;
-    private ConfigEntry<KeyCode>? _showHideToggleShortcutInspector;
+    private ConfigEntry<KeyCode>? _toggleAllUIShortcut;
     private ConfigEntry<KeyCode>? _raycastShortcut;
 
+    private KeyboardShortcut? _toggleAllKey;
     private KeyboardShortcut? _raycastShortcutKey;
-    private KeyboardShortcut? _showHideToggleKeyBrowser;
-    private KeyboardShortcut? _showHideToggleKeyInspector;
 
     public override void OnInitialized()
     {
@@ -45,34 +43,27 @@ public class Reflektor : BaseSpaceWarpPlugin
 
         GameObject rootGameObject = new GameObject("_InspectorRoot");
         DontDestroyOnLoad(rootGameObject);
-        
+
         SpaceWarp.API.Game.Messages.StateChanges.GameStateChanged += (_, _, _) => Utils.ResetSorting();
         SpaceWarp.API.Game.Messages.StateChanges.GameStateChanged += (_, _, _) => RefreshBrowser();
-        
-        _showHideToggleShortcutBrowser = Config.Bind(
-            new ConfigDefinition("Settings", "Toggle Browser UI Key"),
-            KeyCode.Q,
-            new ConfigDescription("Toggle the browser UI with: this key + L SHIFT + L ALT"));
-        
-        _showHideToggleShortcutInspector = Config.Bind(
-            new ConfigDefinition("Settings", "Toggle Inspector UI Key"),
-            KeyCode.E,
-            new ConfigDescription("Toggle the inspector UI with: this key + L SHIFT + L ALT"));
 
-        _raycastShortcut = Config.Bind(
-            "Settings",
-            "Fire Raycast Key",
+        _toggleAllUIShortcut = Config.Bind(
+            new ConfigDefinition("Settings", "Toggle UI Key"),
+            KeyCode.F7,
+            new ConfigDescription("Toggle all the reflektor UI with this key."));
+
+        _raycastShortcut = Config.Bind("Settings", "Fire Raycast Key",
             KeyCode.R,
             "Fire a raycast with: this key + L SHIFT + L ALT");
 
         Config.SettingChanged += (_, _) => SetKeyboardShortcuts();
         Config.ConfigReloaded += (_, _) => SetKeyboardShortcuts();
         SetKeyboardShortcuts();
-        
+
         Log("Initialized");
-        
+
         // Add Default Tabs
-        #if DEBUG
+#if DEBUG
         Inspector.SwitchTab(new SelectKey(GameObject.Find("/GameManager")));
 
         GameObject g = new GameObject("[Testing]");
@@ -82,7 +73,7 @@ public class Reflektor : BaseSpaceWarpPlugin
         {
             Inspector.SwitchTab(new SelectKey(t));
         }
-        #endif
+#endif
     }
 
     private static void RefreshBrowser()
@@ -102,19 +93,20 @@ public class Reflektor : BaseSpaceWarpPlugin
         {
             yield return 0;
         }
+
         Browser.Refresh();
     }
 
     public void Update()
     {
-        if (_showHideToggleKeyBrowser != null && _showHideToggleKeyBrowser.Value.IsDown())
+        if (_toggleAllKey != null && _toggleAllKey.Value.IsDown())
         {
-            Browser.ToggleDisplay();
-        }
-        
-        if (_showHideToggleKeyInspector != null && _showHideToggleKeyInspector.Value.IsDown())
-        {
-            Inspector.ToggleDisplay();
+            Navigator.UpdateValue(Navigator.WindowId.Inspector, false);
+            Navigator.UpdateValue(Navigator.WindowId.Browser, false);
+            Navigator.UpdateValue(Navigator.WindowId.Logger, false);
+            Navigator.UpdateValue(Navigator.WindowId.Messages, false);
+            
+            Navigator.ToggleDisplay();
         }
 
         if (_raycastShortcutKey != null && _raycastShortcutKey.Value.IsDown())
@@ -160,13 +152,14 @@ public class Reflektor : BaseSpaceWarpPlugin
         }, key, triggeredManually, 3));
     }
 
-    private static IEnumerator FireEventAfterWait(Action<SelectKey, bool> eventAction, SelectKey obj, bool b, int numFrames)
+    private static IEnumerator FireEventAfterWait(Action<SelectKey, bool> eventAction, SelectKey obj, bool b,
+        int numFrames)
     {
         for (int i = 0; i < numFrames; i++)
         {
             yield return 0;
         }
-        
+
         eventAction.Invoke(obj, b);
     }
 
@@ -180,22 +173,16 @@ public class Reflektor : BaseSpaceWarpPlugin
 
     private void SetKeyboardShortcuts()
     {
+        if (_toggleAllUIShortcut != null)
+        {
+            _toggleAllKey =
+                new KeyboardShortcut(_toggleAllUIShortcut.Value);
+        }
+
         if (_raycastShortcut != null)
         {
-            _raycastShortcutKey = 
+            _raycastShortcutKey =
                 new KeyboardShortcut(_raycastShortcut.Value, KeyCode.LeftShift, KeyCode.LeftAlt);
-        }
-
-        if (_showHideToggleShortcutBrowser != null)
-        {
-            _showHideToggleKeyBrowser =
-                new KeyboardShortcut(_showHideToggleShortcutBrowser.Value, KeyCode.LeftShift, KeyCode.LeftAlt);
-        }
-
-        if (_showHideToggleShortcutInspector != null)
-        {
-            _showHideToggleKeyInspector =
-                new KeyboardShortcut(_showHideToggleShortcutInspector.Value, KeyCode.LeftShift, KeyCode.LeftAlt);
         }
     }
 
@@ -205,6 +192,7 @@ public class Reflektor : BaseSpaceWarpPlugin
         {
             Log(enumerable);
         }
+
         StringBuilder sb = new();
         string list = sb.AppendJoin(", ", msg).ToString();
         Debug.Log($"<color=#00FF77>{ModName}: {list}</color>");
