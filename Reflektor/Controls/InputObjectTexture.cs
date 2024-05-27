@@ -15,7 +15,7 @@ public class InputObjectTexture : InputObject
     
     private readonly VisualElement _imagePreview = new();
 
-    private Texture2D? _image;
+    private Texture2D _image;
 
     public InputObjectTexture(Info info) : base(info)
     {

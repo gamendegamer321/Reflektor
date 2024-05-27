@@ -8,10 +8,10 @@ namespace Reflektor.Windows;
 public static class Browser
 {
     // Events
-    public static event Action<GameObject?>? CurrentChangedEvent;
+    public static event Action<GameObject> CurrentChangedEvent;
 
     // Data
-    public static GameObject? Current { get; private set; }
+    public static GameObject Current { get; private set; }
     private static readonly List<GameObject> RaycastObjects = new();
     private static readonly BrowserValues BrowserValues;
     private static bool _isParentEditMode;
@@ -31,8 +31,8 @@ public static class Browser
 
     private static readonly TextField Path;
     private static readonly Toggle ParentEditToggle;
-    private static readonly VisualElement? ObjectPane;
-    private static readonly VisualElement? RaycastPane;
+    private static readonly VisualElement ObjectPane;
+    private static readonly VisualElement RaycastPane;
     private static readonly Button RaycastBackBtn;
     private static readonly ListView RaycastList;
 
@@ -110,7 +110,7 @@ public static class Browser
         }
         else
         {
-            GameObject? candidate = GameObject.Find(newPath.RemoveTrailingSlashes());
+            GameObject candidate = GameObject.Find(newPath.RemoveTrailingSlashes());
             if (candidate is null)
             {
                 if (_isParentEditMode)
@@ -139,7 +139,7 @@ public static class Browser
         }
     }
 
-    public static void Refresh(GameObject? newGameObject)
+    public static void Refresh(GameObject newGameObject)
     {
         Current = newGameObject;
         Refresh();

@@ -19,8 +19,8 @@ public class BrowserValues
     // Data
     private bool _useAbsolutePosition;
     private List<Component> Components { get; } = new();
-    private RectTransform? RectTransform { get; set; }
-    private CanvasScaler? CanvasScaler { get; set; }
+    private RectTransform RectTransform { get; set; }
+    private CanvasScaler CanvasScaler { get; set; }
     
     // GUI
     private readonly List<TextField> _inputs;
@@ -29,11 +29,11 @@ public class BrowserValues
 
     public BrowserValues(VisualElement root)
     {
-        TextField? nameInput = root.Q<TextField>(name: "NameInput");
-        TextField? posInput = root.Q<TextField>(name: "PosInput");
-        TextField? scaleInput = root.Q<TextField>(name: "ScaleInput");
-        TextField? sizeInput = root.Q<TextField>(name: "SizeInput");
-        TextField? anchorInput = root.Q<TextField>(name: "AnchorInput");
+        TextField nameInput = root.Q<TextField>(name: "NameInput");
+        TextField posInput = root.Q<TextField>(name: "PosInput");
+        TextField scaleInput = root.Q<TextField>(name: "ScaleInput");
+        TextField sizeInput = root.Q<TextField>(name: "SizeInput");
+        TextField anchorInput = root.Q<TextField>(name: "AnchorInput");
         _inputs = new List<TextField> { nameInput, posInput, scaleInput, sizeInput, anchorInput };
         
         _activeToggle = root.Q<Toggle>(name: "ActiveToggle");
@@ -86,7 +86,7 @@ public class BrowserValues
         _componentList.makeItem = () => new Label();
         _componentList.bindItem = (element, index) =>
         {
-            Component? comp = Components[index];
+            Component comp = Components[index];
             if (element is Label label)
             {
                 label.text = comp.GetType().Name;
@@ -97,7 +97,7 @@ public class BrowserValues
         _componentList.selectedIndicesChanged += _ => { };
         _componentList.itemsChosen += enumerable =>
         {
-            object? obj = enumerable.First();
+            object obj = enumerable.First();
             if (obj is not null)
             {
                 Inspector.SwitchTab(new SelectKey(obj));
@@ -146,7 +146,7 @@ public class BrowserValues
             _componentList.Rebuild();
             _componentList.SetEmptyText("(No Object Selected)", "#777777");
 
-            foreach (TextField? input in _inputs)
+            foreach (TextField input in _inputs)
             {
                 GetChanges(input);
             }

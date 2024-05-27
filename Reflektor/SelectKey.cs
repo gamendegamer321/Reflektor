@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Reflektor;
 
@@ -12,10 +10,10 @@ public class SelectKey
     public object Target => GetTargetObj();
     private Type TargetType { get; }
 
-    private readonly object? _cache;
-    private readonly object? _index;
+    private readonly object _cache;
+    private readonly object _index;
 
-    public SelectKey(object root, string path = "", object? index = null)
+    public SelectKey(object root, string path = "", object index = null)
     {
         if (root.GetType().IsValueType && root is not IEnumerable)
         {
@@ -59,7 +57,7 @@ public class SelectKey
         return cur;
     }
 
-    public object? GetValue(string name)
+    public object GetValue(string name)
     {
         if (name == "" && _index is not null)
         {
@@ -77,7 +75,7 @@ public class SelectKey
         return Target.GetValue(name);
     }
 
-    public void SetValue(string name, object? value)
+    public void SetValue(string name, object value)
     {
         //Reflektor.Log($"set: n: {name} v: {value}");
         if (name == "" && _index is not null)
@@ -94,7 +92,7 @@ public class SelectKey
         }
         
         SelectKey key = this;
-        object? index = _index;
+        object index = _index;
         int recursionTimeout = 0;
         while (recursionTimeout < 250)
         {
@@ -213,9 +211,9 @@ public class SelectKey
             }
         }
 
-        object? newIndex = _index;
+        object newIndex = _index;
         List<string> newPathList = new();
-        string[]? pathComps = $"{Path}.{targetPath}".Split('.', StringSplitOptions.RemoveEmptyEntries);
+        string[] pathComps = $"{Path}.{targetPath}".Split('.', StringSplitOptions.RemoveEmptyEntries);
         foreach (var pathComp in pathComps)
         {
             cur = cur.GetValue(pathComp) ?? throw new NullReferenceException($"Could not find target because a path component was null: [{Path}.{targetPath}]");
@@ -236,7 +234,7 @@ public class SelectKey
         return new SelectKey(root, newPath, newIndex);
     }
 
-    public override bool Equals(object? obj)
+    public override bool Equals(object obj)
     {
         if (obj is SelectKey otherKey)
         {

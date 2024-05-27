@@ -53,11 +53,11 @@ public static class Inspector
         PathInput.RegisterValueChangedCallback(evt =>
         {
             string[] fullPath = evt.newValue.Split("|", 2);
-            GameObject? candidate = GameObject.Find(fullPath.First());
+            GameObject candidate = GameObject.Find(fullPath.First());
             if (candidate is not null)
             {
                 string compTargetType = fullPath.Last().Trim();
-                Component? comp = candidate.GetComponentByType(compTargetType);
+                Component comp = candidate.GetComponentByType(compTargetType);
                 SwitchTab(comp != null ? new SelectKey(comp) : new SelectKey(candidate));
             }
 

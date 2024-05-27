@@ -42,7 +42,7 @@ public class InputEnumFlags : InputBase
         _container.Add(_expandBtn);
         _container.Add(_containerExpanded);
         _containerExpanded.AddToClassList("container-expanded");
-        foreach (object? v in Enum.GetValues(_enumType))
+        foreach (object v in Enum.GetValues(_enumType))
         {
             if (v is Enum e)
             {
@@ -73,7 +73,7 @@ public class InputEnumFlags : InputBase
                 BuildEnum();
             }
             
-            foreach (object? v in Enum.GetValues(_enumType))
+            foreach (object v in Enum.GetValues(_enumType))
             {
                 if (v is Enum enumVal)
                 {

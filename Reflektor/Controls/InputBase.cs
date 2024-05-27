@@ -10,11 +10,11 @@ public abstract class InputBase : VisualElement, IComparable
     protected string Name { get; }
 
     protected readonly Info.GetMethod Getter;
-    protected readonly Info.SetMethod? Setter;
+    protected readonly Info.SetMethod Setter;
 
     protected readonly bool IsInsideCollection;
 
-    private readonly MemberInfo? _info;
+    private readonly MemberInfo _info;
     private readonly int _sortOrder;
 
     private readonly Label _labelElement = new();

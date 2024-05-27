@@ -145,7 +145,7 @@ public class Reflektor : BaseSpaceWarpPlugin
 
         Instance.StartCoroutine(FireEventAfterWait((selectKey, b) =>
         {
-            GameObject? g = selectKey.Target.GetGameObject();
+            GameObject g = selectKey.Target.GetGameObject();
             if (g is not null)
             {
                 PropertyChangedEvent?.Invoke(new SelectKey(g), b);
@@ -195,7 +195,7 @@ public class Reflektor : BaseSpaceWarpPlugin
         }
     }
 
-    public static void Log(object? msg)
+    public static void Log(object msg)
     {
         if (msg is IEnumerable<object> enumerable)
         {
@@ -207,7 +207,7 @@ public class Reflektor : BaseSpaceWarpPlugin
         Debug.Log($"<color=#00FF77>{ModName}: {list}</color>");
     }
 
-    private static void Log(IEnumerable<object>? msg)
+    private static void Log(IEnumerable<object> msg)
     {
         StringBuilder sb = new();
         string list = sb.AppendJoin(", ", msg).ToString();

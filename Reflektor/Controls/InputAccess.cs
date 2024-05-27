@@ -76,7 +76,7 @@ public static class InputAccess
         return output;
     }
 
-    public static InputBase GetInput(SelectKey key, string name, object value, MemberInfo? memberInfo = null)
+    public static InputBase GetInput(SelectKey key, string name, object value, MemberInfo memberInfo = null)
     {
         Info info = new Info(key, name, memberInfo);
         InputBase b = value switch

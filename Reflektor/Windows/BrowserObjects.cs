@@ -80,7 +80,7 @@ public class BrowserObjects
         Browser.CurrentChangedEvent += UpdateObjects;
     }
 
-    private void UpdateObjects(GameObject? obj)
+    private void UpdateObjects(GameObject obj)
     {
         _curObjLabel.text = obj != null ? obj.name : "[Scene Root]";
 
@@ -116,7 +116,7 @@ public class BrowserObjects
         
         object sceneObj = new Scene();
         Type type = typeof(Scene);
-        FieldInfo? fieldInfo = type.GetField("m_Handle", flags);
+        FieldInfo fieldInfo = type.GetField("m_Handle", flags);
         fieldInfo?.SetValue(sceneObj, -12);
 
         Scene dontDestroyScene = (Scene)sceneObj;

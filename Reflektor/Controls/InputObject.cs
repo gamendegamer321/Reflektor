@@ -15,7 +15,7 @@ public class InputObject : InputBase
 
     public override void PullChanges()
     {
-        object? inspect = Getter.Invoke();
+        object inspect = Getter.Invoke();
 
         if (inspect == null)
         {

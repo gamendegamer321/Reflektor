@@ -63,8 +63,8 @@ public static class Utils
                 IsMovingEnabled = true
             }
         };
-        VisualTreeAsset? browserWindowUxml = AssetManager.GetAsset<VisualTreeAsset>($"{Reflektor.ModGuid}/reflektor_ui/ui/{name}.uxml");
-
+        
+        VisualTreeAsset browserWindowUxml = AssetManager.GetAsset<VisualTreeAsset>($"{Reflektor.ModGuid}/reflektor_ui/ui/{name}.uxml");
         UIDocument window = Window.Create(winOptions, browserWindowUxml);
 
         window.rootVisualElement.RegisterCallback((MouseDownEvent _) => window.rootVisualElement.BringToFront());
@@ -77,14 +77,14 @@ public static class Utils
     ///////////////////////////
     
     // Arrays
-    public static T? First<T>(this T[] arr)
+    public static T First<T>(this T[] arr)
     {
         return arr.Length > 0 
             ? arr[0] 
             : default;
     }
 
-    public static T? Last<T>(this T[] arr)
+    public static T Last<T>(this T[] arr)
     {
         return arr.Length > 0
             ? arr[^1]
@@ -122,7 +122,7 @@ public static class Utils
     }
     
     // Strings
-    public static string? Truncate(this string? value, int maxLength, string truncationSuffix = "…")
+    public static string Truncate(this string value, int maxLength, string truncationSuffix = "…")
     {
         return value?.Trim().Length > maxLength
             ? value.Trim()[..maxLength] + truncationSuffix
@@ -147,9 +147,9 @@ public static class Utils
         }
     }
     
-    public static void SetEmptyText(this ListView? listView, string message, string? hexColor = null)
+    public static void SetEmptyText(this ListView listView, string message, string hexColor = null)
     {
-        VisualElement? emptyText = listView.Query(className: "unity-list-view__empty-label");
+        VisualElement emptyText = listView.Query(className: "unity-list-view__empty-label");
         if (emptyText is Label l)
         {
             l.text = hexColor is null 
@@ -159,7 +159,7 @@ public static class Utils
     }
 
     // Game Objects and Components
-    public static GameObject? GetGameObject(this object obj)
+    public static GameObject GetGameObject(this object obj)
     {
         return obj switch
         {
@@ -180,7 +180,7 @@ public static class Utils
         return path;
     }
     
-    public static Component? GetComponentByType(this GameObject candidate, string compTargetType)
+    public static Component GetComponentByType(this GameObject candidate, string compTargetType)
     {
         foreach (Component c in candidate.GetComponents<Component>())
         {
@@ -197,7 +197,7 @@ public static class Utils
     }
     
     // Reflection
-    public static object? GetValue(this object obj, string name)
+    public static object GetValue(this object obj, string name)
     {
         if (obj.GetType().GetField(name, ReflectionFlags) is { } f)
         {
@@ -212,7 +212,7 @@ public static class Utils
         return null;
     }
 
-    public static void SetValue(this object obj, string name, object? value)
+    public static void SetValue(this object obj, string name, object value)
     {
         switch (obj.GetType().GetFieldOrProperty(name))
         {
@@ -225,7 +225,7 @@ public static class Utils
         }
     }
 
-    private static MemberInfo? GetFieldOrProperty(this IReflect t, string name)
+    private static MemberInfo GetFieldOrProperty(this IReflect t, string name)
     {
         if (t.GetProperty(name, ReflectionFlags) is { } p)
         {
@@ -278,7 +278,7 @@ public static class Utils
         return members;
     }
     
-    public static int GetSortIndex(this MemberInfo? m)
+    public static int GetSortIndex(this MemberInfo m)
     {
         if (m is null)
         {
@@ -294,7 +294,7 @@ public static class Utils
         };
 
         int i = 0;
-        Type? t = m.DeclaringType;
+        Type t = m.DeclaringType;
         while (t is not null)
         {
             i--;
