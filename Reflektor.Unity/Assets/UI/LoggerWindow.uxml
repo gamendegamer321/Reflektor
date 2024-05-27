@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles.uss?fileID=7433441132597879392&amp;guid=1f418f752277be643b9f97b55b379d1a&amp;type=3#Styles" />
+    <ui:VisualElement name="LoggerWindowRoot" class="root" style="flex-grow: 1;">
+        <ui:Label tabindex="-1" text="Logger" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TitleLabel" class="header" />
+        <ui:TextField picking-mode="Ignore" label="Filter" name="FilterInput" is-delayed="false" />
+        <ui:GroupBox name="LoggerControls" class="controls">
+            <ui:GroupBox name="SeverityControls" style="display: flex;">
+                <ui:Toggle label="Fatal" name="FatalToggle" value="true" class="redToggle" />
+                <ui:Toggle label="Error" name="ErrorToggle" value="true" class="redToggle" />
+                <ui:Toggle label="Warning" name="WarningToggle" value="true" class="orangeToggle" />
+                <ui:Toggle label="Message" name="MessageToggle" value="true" class="purpleToggle" />
+                <ui:Toggle label="Info" name="InfoToggle" value="true" class="blueToggle" />
+                <ui:Toggle label="Debug" name="DebugToggle" value="true" class="blueToggle" />
+            </ui:GroupBox>
+            <ui:GroupBox name="RefreshControls" style="display: flex;">
+                <ui:Toggle label="Pause Refresh" name="AutoRefreshToggle" />
+                <ui:Button text="Refresh" display-tooltip-when-elided="true" name="RefreshButton" />
+            </ui:GroupBox>
+        </ui:GroupBox>
+        <ui:ScrollView name="LogView">
+            <ui:Label tabindex="-1" text="There are no logs yet..." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Logs" style="white-space: normal;" />
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

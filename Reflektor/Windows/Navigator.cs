@@ -42,6 +42,7 @@ public class Navigator
                 break;
             case WindowId.Logger:
                 target = LoggerToggle;
+                LoggerWindow.SetDisplay(targetValue);
                 break;
             case WindowId.Messages:
                 target = MessagesToggle;

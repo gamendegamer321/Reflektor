@@ -10,9 +10,9 @@ public static class Inspector
     // Data
     private static readonly Dictionary<SelectKey, Tab> Tabs = new();
     private static DisplayFlags _flags = DisplayFlags.All;
-    private static SelectKey? _current;
+    private static SelectKey _current;
 
-    private static SelectKey? Current
+    private static SelectKey Current
     {
         get => _current;
         set

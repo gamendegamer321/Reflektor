@@ -41,6 +41,13 @@ $foldout-header-checked-color: #4B50B0;
   max-width: 1000px;
 }
 
+#LoggerWindowRoot {
+  min-height: 750px;
+  max-height: 750px;
+  min-width: 1000px;
+  max-width: 1000px;
+}
+
 #NavbarWindowRoot {
   min-width: 360px;
   max-width: 360px;
@@ -303,6 +310,48 @@ ListView {
     &:checked:hover > Label {
       color: white;
       background-color: #DE771E;
+    }
+  }
+
+  .redToggle {
+    > Label {
+      color: #890404;
+    }
+
+    &:hover > Label {
+      color: #ce0e0e;
+      background-color: rgba(1, 1, 1, 0.5);
+    }
+
+    &:checked > Label {
+      color: white;
+      background-color: #890404;
+    }
+
+    &:checked:hover > Label {
+      color: white;
+      background-color: #de1e1e;
+    }
+  }
+
+  .blueToggle {
+    > Label {
+      color: #045289;
+    }
+
+    &:hover > Label {
+      color: #0e9bce;
+      background-color: rgba(1, 1, 1, 0.5);
+    }
+
+    &:checked > Label {
+      color: white;
+      background-color: #046a89;
+    }
+
+    &:checked:hover > Label {
+      color: white;
+      background-color: #1eabde;
     }
   }
 

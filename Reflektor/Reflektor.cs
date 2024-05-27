@@ -2,7 +2,9 @@
 using System.Text;
 using BepInEx;
 using BepInEx.Configuration;
+using HarmonyLib;
 using JetBrains.Annotations;
+using Reflektor.Patches;
 using Reflektor.Windows;
 using SpaceWarp;
 using SpaceWarp.API.Mods;
@@ -20,20 +22,24 @@ public class Reflektor : BaseSpaceWarpPlugin
     [PublicAPI] public const string ModVer = MyPluginInfo.PLUGIN_VERSION;
 
     // Instance stuff
-    public static Reflektor? Instance;
+    public static Reflektor Instance;
 
     private const string RootName = "_InspectorRoot";
     public static GameObject Root => GameObject.Find(RootName) ?? new GameObject(RootName);
 
     // Events
-    public static event Action<SelectKey, bool>? PropertyChangedEvent;
+    public static event Action<SelectKey, bool> PropertyChangedEvent;
 
     // Config
-    private ConfigEntry<KeyCode>? _toggleAllUIShortcut;
-    private ConfigEntry<KeyCode>? _raycastShortcut;
+    private ConfigEntry<KeyCode> _toggleAllUIShortcut;
+    private ConfigEntry<KeyCode> _raycastShortcut;
 
     private KeyboardShortcut? _toggleAllKey;
     private KeyboardShortcut? _raycastShortcutKey;
+
+    private Harmony _harmonyInstance;
+
+    public ConfigEntry<int> MaxLogs;
 
     public override void OnInitialized()
     {
@@ -41,7 +47,7 @@ public class Reflektor : BaseSpaceWarpPlugin
         Log("Initializing");
         Instance = this;
 
-        GameObject rootGameObject = new GameObject("_InspectorRoot");
+        var rootGameObject = new GameObject("_InspectorRoot");
         DontDestroyOnLoad(rootGameObject);
 
         SpaceWarp.API.Game.Messages.StateChanges.GameStateChanged += (_, _, _) => Utils.ResetSorting();
@@ -56,9 +62,15 @@ public class Reflektor : BaseSpaceWarpPlugin
             KeyCode.R,
             "Fire a raycast with: this key + L SHIFT + L ALT");
 
+        MaxLogs = Config.Bind("Settings", "Max logs count", 150,
+            "The maximum amount of logs that can be stored before the oldest get removed");
+
         Config.SettingChanged += (_, _) => SetKeyboardShortcuts();
         Config.ConfigReloaded += (_, _) => SetKeyboardShortcuts();
         SetKeyboardShortcuts();
+
+        _harmonyInstance = new Harmony(ModGuid);
+        _harmonyInstance.PatchAll(typeof(BepInExLogPatch));
 
         Log("Initialized");
 
@@ -74,6 +86,8 @@ public class Reflektor : BaseSpaceWarpPlugin
             Inspector.SwitchTab(new SelectKey(t));
         }
 #endif
+
+        ToggleDisplay();
     }
 
     private static void RefreshBrowser()
@@ -101,12 +115,7 @@ public class Reflektor : BaseSpaceWarpPlugin
     {
         if (_toggleAllKey != null && _toggleAllKey.Value.IsDown())
         {
-            Navigator.UpdateValue(Navigator.WindowId.Inspector, false);
-            Navigator.UpdateValue(Navigator.WindowId.Browser, false);
-            Navigator.UpdateValue(Navigator.WindowId.Logger, false);
-            Navigator.UpdateValue(Navigator.WindowId.Messages, false);
-            
-            Navigator.ToggleDisplay();
+            ToggleDisplay();
         }
 
         if (_raycastShortcutKey != null && _raycastShortcutKey.Value.IsDown())
@@ -203,5 +212,15 @@ public class Reflektor : BaseSpaceWarpPlugin
         StringBuilder sb = new();
         string list = sb.AppendJoin(", ", msg).ToString();
         Debug.Log($"<color=#00FF77>{ModName}: {list}</color>");
+    }
+
+    private void ToggleDisplay()
+    {
+        Navigator.UpdateValue(Navigator.WindowId.Inspector, false);
+        Navigator.UpdateValue(Navigator.WindowId.Browser, false);
+        Navigator.UpdateValue(Navigator.WindowId.Logger, false);
+        Navigator.UpdateValue(Navigator.WindowId.Messages, false);
+
+        Navigator.ToggleDisplay();
     }
 }

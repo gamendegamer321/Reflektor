@@ -12,6 +12,13 @@
   max-width: 1000px;
 }
 
+#LoggerWindowRoot {
+  min-height: 750px;
+  max-height: 750px;
+  min-width: 1000px;
+  max-width: 1000px;
+}
+
 #NavbarWindowRoot {
   min-width: 360px;
   max-width: 360px;
@@ -239,6 +246,36 @@ ListView {
 .controls .orangeToggle:checked:hover > Label {
   color: white;
   background-color: #DE771E;
+}
+.controls .redToggle > Label {
+  color: #890404;
+}
+.controls .redToggle:hover > Label {
+  color: #ce0e0e;
+  background-color: rgba(1, 1, 1, 0.5);
+}
+.controls .redToggle:checked > Label {
+  color: white;
+  background-color: #890404;
+}
+.controls .redToggle:checked:hover > Label {
+  color: white;
+  background-color: #de1e1e;
+}
+.controls .blueToggle > Label {
+  color: #045289;
+}
+.controls .blueToggle:hover > Label {
+  color: #0e9bce;
+  background-color: rgba(1, 1, 1, 0.5);
+}
+.controls .blueToggle:checked > Label {
+  color: white;
+  background-color: #046a89;
+}
+.controls .blueToggle:checked:hover > Label {
+  color: white;
+  background-color: #1eabde;
 }
 .controls #AutoRefreshToggle > Label {
   color: #005588;
