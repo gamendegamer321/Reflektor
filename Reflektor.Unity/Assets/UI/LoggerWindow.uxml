@@ -17,8 +17,6 @@
                 <ui:Button text="Refresh" display-tooltip-when-elided="true" name="RefreshButton" />
             </ui:GroupBox>
         </ui:GroupBox>
-        <ui:ScrollView name="LogView">
-            <ui:Label tabindex="-1" text="There are no logs yet..." parse-escape-sequences="true" display-tooltip-when-elided="true" name="Logs" style="white-space: normal;" />
-        </ui:ScrollView>
+        <ui:ListView name="LogsView" virtualization-method="DynamicHeight" selection-type="None" horizontal-scrolling="true" />
     </ui:VisualElement>
 </ui:UXML>

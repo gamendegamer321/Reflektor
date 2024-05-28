@@ -10,13 +10,14 @@ public class LoggerWindow
 {
     private static VisibilityFlag _visibility = VisibilityFlag.All;
 
-    private static List<ReflektorLog> _showLogs = new();
+    private static readonly List<ReflektorLog> InternalLogs = new();
+    private static readonly List<ReflektorLog> ShownLogs = new();
 
     private static readonly UIDocument Window;
 
     private static readonly TextField FilterInput;
     private static readonly Toggle AutoRefreshToggle;
-    private static readonly Label Logs;
+    private static readonly ListView LogsView;
 
     static LoggerWindow()
     {
@@ -24,7 +25,6 @@ public class LoggerWindow
 
         FilterInput = Window.rootVisualElement.Q<TextField>("FilterInput");
         AutoRefreshToggle = Window.rootVisualElement.Q<Toggle>("AutoRefreshToggle");
-        Logs = Window.rootVisualElement.Q<Label>("Logs");
 
         FilterInput.RegisterValueChangedCallback(_ => Refresh());
 
@@ -40,7 +40,22 @@ public class LoggerWindow
             .RegisterValueChangedCallback(evt => UpdateVisibilityFlag(VisibilityFlag.Info, evt.newValue));
         Window.rootVisualElement.Q<Toggle>("DebugToggle")
             .RegisterValueChangedCallback(evt => UpdateVisibilityFlag(VisibilityFlag.Debug, evt.newValue));
-        
+
+        LogsView = Window.rootVisualElement.Q<ListView>("LogsView");
+        LogsView.SetEmptyText("No logs available");
+        LogsView.itemsSource = ShownLogs;
+        LogsView.makeItem = () => new Label();
+        LogsView.bindItem = (element, i) =>
+        {
+            var log = ShownLogs[i];
+            if (element is not Label label)
+            {
+                return;
+            }
+
+            label.text = log.GetFormattedText();
+        };
+
         Window.rootVisualElement.Q<Button>("RefreshButton").clicked += Refresh;
     }
 
@@ -51,27 +66,31 @@ public class LoggerWindow
             Refresh();
         }
     }
-    
+
     private static void Refresh()
     {
-        _showLogs.AddRange(LogListener.CaughtLogs());
-        LogListener.Clear();
+        var newLogs = LogListener.CaughtLogs();
 
-        var maxLogCount = Reflektor.Instance.MaxLogs.Value;
-        while (_showLogs.Count > maxLogCount)
+        if (newLogs.Count > 0)
         {
-            _showLogs.RemoveAt(0);
+            InternalLogs.AddRange(newLogs);
+            LogListener.Clear();
+
+            var maxLogCount = Reflektor.Instance.MaxLogs.Value;
+            while (InternalLogs.Count > maxLogCount)
+            {
+                InternalLogs.RemoveAt(0);
+            }
         }
 
-        StringBuilder logText = new();
-        foreach (var log in _showLogs.Where(e => e.Filter(_visibility, FilterInput.value)).Reverse())
-        {
-            logText.AppendLine(log.GetFormattedText());
-        }
+        ShownLogs.Clear();
+        ShownLogs.AddRange(InternalLogs.Where(e => e.Filter(_visibility, FilterInput.value)).Reverse());
 
-        Logs.Text(logText.ToString());
+        LogsView.ClearSelection();
+        LogsView.Rebuild();
+        LogsView.RefreshItems();
     }
-    
+
     public static void SetDisplay(bool visible)
     {
         if (visible)

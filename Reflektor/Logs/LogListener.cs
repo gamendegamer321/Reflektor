@@ -10,9 +10,15 @@ public static class LogListener
     {
         Caught.Add(log);
         LoggerWindow.AutoRefresh();
+        
+        var maxLogCount = Reflektor.Instance.MaxLogs.Value;
+        while (Caught.Count > maxLogCount)
+        {
+            Caught.RemoveAt(0);
+        }
     }
 
-    public static IEnumerable<ReflektorLog> CaughtLogs()
+    public static List<ReflektorLog> CaughtLogs()
     {
         return Caught;
     }
