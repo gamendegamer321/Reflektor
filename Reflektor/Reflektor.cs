@@ -65,7 +65,7 @@ public class Reflektor : BaseSpaceWarpPlugin
 
         MaxLogs = Config.Bind("Settings", "Max logs count", 300,
             "The maximum amount of logs that can be stored before the oldest get removed");
-        MaxLogs = Config.Bind("Settings", "Max messages count", 150,
+        MaxMessages = Config.Bind("Settings", "Max messages count", 150,
             "The maximum amount of messages that can be stored before the oldest get removed");
 
 
