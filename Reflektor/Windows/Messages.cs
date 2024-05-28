@@ -49,7 +49,7 @@ public class Messages
     public static void Add(ReflektorMessage message)
     {
         InternalMessages.Add(message);
-        while (InternalMessages.Count > Reflektor.Instance.MaxLogs.Value)
+        while (InternalMessages.Count > Reflektor.Instance.MaxMessages.Value)
         {
             InternalMessages.RemoveAt(0);
         }

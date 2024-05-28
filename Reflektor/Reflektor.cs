@@ -40,6 +40,7 @@ public class Reflektor : BaseSpaceWarpPlugin
     private Harmony _harmonyInstance;
 
     public ConfigEntry<int> MaxLogs;
+    public ConfigEntry<int> MaxMessages;
 
     public override void OnInitialized()
     {
@@ -62,8 +63,11 @@ public class Reflektor : BaseSpaceWarpPlugin
             KeyCode.R,
             "Fire a raycast with: this key + L SHIFT + L ALT");
 
-        MaxLogs = Config.Bind("Settings", "Max logs count", 150,
+        MaxLogs = Config.Bind("Settings", "Max logs count", 300,
             "The maximum amount of logs that can be stored before the oldest get removed");
+        MaxLogs = Config.Bind("Settings", "Max messages count", 150,
+            "The maximum amount of messages that can be stored before the oldest get removed");
+
 
         Config.SettingChanged += (_, _) => SetKeyboardShortcuts();
         Config.ConfigReloaded += (_, _) => SetKeyboardShortcuts();
