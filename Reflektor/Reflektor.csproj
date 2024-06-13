@@ -7,27 +7,46 @@
         <NoWarn>$(NoWarn);CS0436</NoWarn>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="BepInEx.Core" Version="5.4.21" />
-        <PackageReference Include="BepInEx.BaseLib" Version="5.4.21" />
-        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
-        <PackageReference Include="KerbalSpaceProgram2.GameLibs" Version="0.2.0" Publicize="true"/>
-        <PackageReference Include="SpaceWarp" Version="1.7.0" />
-        <PackageReference Include="UitkForKsp2" Version="2.4.0" />
-        <PackageReference Include="UnityEngine.Modules" Version="2022.3.5" />
+    <ItemGroup Label="NuGet package references">
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Core" Version="5.*"/>
         <PackageReference Include="HarmonyX" Version="2.10.2" />
     </ItemGroup>
+    
+    <ItemGroup Label="Assemblies">
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(KSP2DIR)\KSP2_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-Firstpass">
+            <HintPath>$(KSP2DIR)\KSP2_x64_Data\Managed\Assembly-CSharp-Firstpass.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    
+    <ItemGroup Label="Unity">
+        <Reference Include="$(KSP2DIR)\KSP2_x64_Data\Managed\Unity.*.dll" />
+        <Reference Include="$(KSP2DIR)\KSP2_x64_Data\Managed\UnityEngine.dll" />
+        <Reference Include="$(KSP2DIR)\KSP2_x64_Data\Managed\UnityEngine.*.dll" />
+    </ItemGroup>
+    
+    <ItemGroup Label="SpaceWarp">
+        <Reference Include="SpaceWarp">
+            <HintPath>$(KSP2DIR)\BepInEx\plugins\SpaceWarp\SpaceWarp.dll</HintPath>
+        </Reference>
+        <Reference Include="SpaceWarp.Core">
+            <HintPath>$(KSP2DIR)\BepInEx\plugins\SpaceWarp\SpaceWarp.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="$(KSP2DIR)\BepInEx\plugins\SpaceWarp\modules\*.dll" />
+    </ItemGroup>
 
-    <!-- Set assembly values from swinfo -->
-    <PropertyGroup Label="Package source configuration">
-        <RestoreAdditionalProjectSources>
-            https://nuget.spacewarp.org/v3/index.json
-        </RestoreAdditionalProjectSources>
-    </PropertyGroup>
+    <ItemGroup Label="UitkForKsp2">
+        <Reference Include="UitkForKsp2">
+            <HintPath>$(KSP2DIR)\BepInEx\plugins\UitkForKsp2\UitkForKsp2.dll</HintPath>
+        </Reference>
+        <Reference Include="UitkForKsp2.Controls">
+            <HintPath>$(KSP2DIR)\BepInEx\plugins\UitkForKsp2\UitkForKsp2.Controls.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
     <ItemGroup Label="Dependencies for build targets">
         <PackageReference Include="JsonPeek" Version="1.2.0" PrivateAssets="all"/>
@@ -60,22 +79,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="_Resources" />
-        <_CopyItems Include="$(ProjectDir)/_Resources/**/*.*" />
+        <Folder Include="_Resources"/>
+        <_CopyItems Include="$(ProjectDir)/_Resources/**/*.*"/>
     </ItemGroup>
 
     <Target Name="CopyToKSP2Dir" AfterTargets="AfterBuild">
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(KSP2DIR)/BepInEx/plugins/$(ProjectName)" />
-        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(KSP2DIR)/BepInEx/plugins/$(ProjectName)/%(RecursiveDir)" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(KSP2DIR)/BepInEx/plugins/$(ProjectName)"/>
+        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(KSP2DIR)/BepInEx/plugins/$(ProjectName)/%(RecursiveDir)"/>
     </Target>
 
     <Target Name="CreateRelease" AfterTargets="AfterBuild" Condition="'$(Configuration)'=='Release'">
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TEMP)/$(ProjectName)/BepInEx/plugins/$(ProjectName)" />
-        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(TEMP)/$(ProjectName)/BepInEx/plugins/$(ProjectName)/%(RecursiveDir)" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TEMP)/$(ProjectName)/BepInEx/plugins/$(ProjectName)"/>
+        <Copy SourceFiles="@(_CopyItems)" DestinationFolder="$(TEMP)/$(ProjectName)/BepInEx/plugins/$(ProjectName)/%(RecursiveDir)"/>
         <ZipDirectory
                 Overwrite="true"
                 SourceDirectory="$(TEMP)/$(ProjectName)"
-                DestinationFile="$(USERPROFILE)/Desktop/$(ProjectName)-v$(Version).zip" />
+                DestinationFile="$(USERPROFILE)/Desktop/$(ProjectName)-v$(Version).zip"/>
         <RemoveDir Directories="$(TEMP)/$(ProjectName)"/>
     </Target>
 </Project>
