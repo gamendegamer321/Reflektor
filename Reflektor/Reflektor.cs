@@ -17,9 +17,9 @@ namespace Reflektor;
 [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 public class Reflektor : BaseSpaceWarpPlugin
 {
-    [PublicAPI] public const string ModGuid = MyPluginInfo.PLUGIN_GUID;
-    [PublicAPI] public const string ModName = MyPluginInfo.PLUGIN_NAME;
-    [PublicAPI] public const string ModVer = MyPluginInfo.PLUGIN_VERSION;
+    [PublicAPI] public const string ModGuid = "Reflektor";
+    [PublicAPI] public const string ModName = "Reflektor";
+    [PublicAPI] public const string ModVer = "0.2.1.2";
 
     // Instance stuff
     public static Reflektor Instance;
