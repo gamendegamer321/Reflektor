@@ -9,12 +9,16 @@ public static class LogListener
     public static void AddLog(ReflektorLog log)
     {
         Caught.Add(log);
-        LoggerWindow.AutoRefresh();
         
         var maxLogCount = Reflektor.Instance.MaxLogs.Value;
         while (Caught.Count > maxLogCount)
         {
             Caught.RemoveAt(0);
+        }
+
+        if (Reflektor.Instance.IsActive)
+        {
+            LoggerWindow.AutoRefresh();
         }
     }
 

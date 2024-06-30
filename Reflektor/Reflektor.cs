@@ -2,6 +2,7 @@
 using System.Text;
 using BepInEx;
 using BepInEx.Configuration;
+using BepInEx.Logging;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Reflektor.Patches;
@@ -39,21 +40,15 @@ public class Reflektor : BaseSpaceWarpPlugin
 
     private Harmony _harmonyInstance;
 
-    public ConfigEntry<int> MaxLogs;
-    public ConfigEntry<int> MaxMessages;
+    public ConfigEntry<int> MaxLogs { get; private set; }
+    public ConfigEntry<int> MaxMessages { get; private set; }
+    public bool IsActive { get; private set; }
 
-    public override void OnInitialized()
+    private void Awake()
     {
-        base.OnInitialized();
-        Log("Initializing");
         Instance = this;
-
-        var rootGameObject = new GameObject("_InspectorRoot");
-        DontDestroyOnLoad(rootGameObject);
-
-        SpaceWarp.API.Game.Messages.StateChanges.GameStateChanged += (_, _, _) => Utils.ResetSorting();
-        SpaceWarp.API.Game.Messages.StateChanges.GameStateChanged += (_, _, _) => RefreshBrowser();
-
+        
+        // We use the MaxLogs in a patch, so just load all the config
         _toggleAllUIShortcut = Config.Bind(
             new ConfigDefinition("Settings", "Toggle UI Key"),
             KeyCode.F7,
@@ -67,17 +62,33 @@ public class Reflektor : BaseSpaceWarpPlugin
             "The maximum amount of logs that can be stored before the oldest get removed");
         MaxMessages = Config.Bind("Settings", "Max messages count", 150,
             "The maximum amount of messages that can be stored before the oldest get removed");
+        Logger.LogInfo("Added configuration");
+        
+        // Create patches from the start, allows us to log more of what happens during startup
+        Logger.LogInfo("Creating patches");
+        _harmonyInstance = new Harmony(ModGuid);
+        _harmonyInstance.PatchAll(typeof(BepInExLogPatch));
+        _harmonyInstance.PatchAll(typeof(MessagesPatch));
+        Logger.LogInfo("Created patches");
+    }
+
+    public override void OnInitialized()
+    {
+        base.OnInitialized();
+        Logger.LogInfo("Initializing");
+
+        var rootGameObject = new GameObject("_InspectorRoot");
+        DontDestroyOnLoad(rootGameObject);
+
+        SpaceWarp.API.Game.Messages.StateChanges.GameStateChanged += (_, _, _) => Utils.ResetSorting();
+        SpaceWarp.API.Game.Messages.StateChanges.GameStateChanged += (_, _, _) => RefreshBrowser();
 
 
         Config.SettingChanged += (_, _) => SetKeyboardShortcuts();
         Config.ConfigReloaded += (_, _) => SetKeyboardShortcuts();
         SetKeyboardShortcuts();
 
-        _harmonyInstance = new Harmony(ModGuid);
-        _harmonyInstance.PatchAll(typeof(BepInExLogPatch));
-        _harmonyInstance.PatchAll(typeof(MessagesPatch));
-
-        Log("Initialized");
+        Logger.LogInfo("Initialized");
 
         // Add Default Tabs
 #if DEBUG
@@ -92,6 +103,7 @@ public class Reflektor : BaseSpaceWarpPlugin
         }
 #endif
 
+        IsActive = true;
         ToggleDisplay();
     }
 

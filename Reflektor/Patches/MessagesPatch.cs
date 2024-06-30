@@ -12,6 +12,8 @@ public static class MessagesPatch
     [HarmonyPrefix]
     public static void MessageListener(Type type, MessageCenterMessage message)
     {
+        if (!Reflektor.Instance.IsActive) return;
+
         // If we don't have any info about a message, return
         // Otherwise try to fill the missing type/message
         switch (type)
