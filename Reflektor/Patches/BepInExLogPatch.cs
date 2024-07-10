@@ -23,6 +23,6 @@ public static class BepInExLogPatch
             _ => VisibilityFlag.None
         };
 
-        LogListener.AddLog(new ReflektorLog(flag, data.ToString(), __instance.SourceName));
+        LogListener.AddLog(new ReflektorLog(flag, data == null ? "null" : data.ToString(), __instance.SourceName));
     }
 }
