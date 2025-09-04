@@ -24,7 +24,7 @@ All jokes aside, a quicker, lighter weight alternative to Unity Explorer for KSP
 > - [SpaceWarp](https://spacedock.info/mod/3277/Space%20Warp%20+%20BepInEx) (v1.9.5+)
 
 Download the release from the latest release
-from [GitHub](https://github.com/gamendegamer321/Commlines/releases/latest).
+from [GitHub](https://github.com/gamendegamer321/Reflektor/releases/latest).
 
 Place the downloaded assembly in the <code>BepInEx/Plugins</code> folder.
 You can find the KSP 2 root folder by right-clicking the game in your steam library,
