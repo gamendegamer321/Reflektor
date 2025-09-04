@@ -1,5 +1,5 @@
 [![GitHub release](https://flat.badgen.net/github/release/gamendegamer321/Reflektor/)](https://github.com/gamendegamer321/Reflektor/releases/latest)
-![KSP Version](https://flat.badgen.net/static/Game%20Version/v0.2.1+)
+[![KSP Version](https://flat.badgen.net/static/Game%20Version/v0.2.1+)](https://github.com/gamendegamer321/Reflektor)
 [![SpaceWarp Version](https://flat.badgen.net/static/SpaceWarp%20Version/v1.9.5+)](https://github.com/SpaceWarpDev/SpaceWarp)
 [![Original](https://flat.badgen.net/static/Original/coldrifting?icon=github)](https://github.com/coldrifting/Reflektor)
 [![License](https://flat.badgen.net/github/license/gamendegamer321/Reflektor/)](https://github.com/gamendegamer321/Reflektor/blob/master/LICENSE)
