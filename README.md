@@ -7,7 +7,7 @@
 > [!NOTE]
 > This repository is a fork of [coldrifting/Reflektor](https://github.com/coldrifting/Reflektor).
 > 
-> This README has also been updated, view the original [here](https://github.com/coldrifting/Reflektor).
+> This README has also been modified, view the original [here](https://github.com/coldrifting/Reflektor).
 
 # About R.E.F.L.E.K.T.O.R
 
